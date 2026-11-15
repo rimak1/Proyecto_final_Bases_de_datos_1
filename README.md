@@ -11,8 +11,6 @@ database/
   01_DDL_Grupo02D.sql        tablas, llaves, CHECK, triggers (RN-25, RN-26), índices y vistas
   02_DML_Grupo02D.sql        datos de ejemplo (5.997 registros: 160 clientes, 565 reservas, 790 pagos, 2.001 notificaciones)
   03_Reportes_Grupo02D.sql   consultas de los 10 reportes
-  tools/generar_dml.py       generador del script 02 (semilla fija)
-  tools/completar_documento.py  arma el documento final con capturas y consultas
 backend/                     API REST (src/dao, src/services, src/routes, src/dto)
 frontend/                    aplicación React (pages, components, util/pdf.js)
 entrega/                     capturas y PDF de reportes y documentos
