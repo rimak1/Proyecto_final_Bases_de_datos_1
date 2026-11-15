@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { api } from '../../api.js';
 import { Alerta, Cargando, Insignia, Modal, Nota, Titulo, Vacio, useLista, IconoBasura } from '../../components/comunes.jsx';
 import { Paginacion } from '../../components/CrudPage.jsx';
+import { Icono } from '../../components/Iconos.jsx';
 
 const VACIO = { nombre: '', descripcion: '', estado: 'activo', codDane: '', idTipoDestino: '' };
 
@@ -82,7 +83,7 @@ export default function Destinos() {
                   </td>
                 </tr>
               ))}
-              {!lista.length && <tr><td colSpan={7}><Vacio icono="🏞" titulo="No hay destinos con esos filtros" /></td></tr>}
+              {!lista.length && <tr><td colSpan={7}><Vacio icono="paisaje" titulo="No hay destinos con esos filtros" /></td></tr>}
             </tbody>
           </table></div>
         )}

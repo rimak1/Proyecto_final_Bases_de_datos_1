@@ -6,29 +6,30 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useSesion } from '../auth.jsx';
+import { Icono } from './Iconos.jsx';
 
 const MENUS = {
   admin: [
-    { items: [['/admin', 'Tablero', '▦', true], ['/admin/reportes', 'Reportes', '📊']] },
-    { titulo: 'Reseñas', items: [['/admin/resenas', 'Reseñas', '★'], ['/admin/moderacion', 'Moderación', '⚑'], ['/admin/destinos', 'Destinos', '📍'],
-      ['/admin/tipos-destino', 'Tipos de destino', '🏷'], ['/admin/criterios', 'Criterios', '✓']] },
-    { titulo: 'Núcleo común', items: [['/admin/prestadores', 'Prestadores', '🏨'], ['/admin/planes', 'Planes', '🗒'], ['/admin/clientes', 'Clientes', '👤'],
-      ['/admin/reservas', 'Reservas', '📅'], ['/admin/pagos', 'Pagos', '💳'], ['/admin/notificaciones', 'Notificaciones', '🔔'],
-      ['/admin/municipios', 'Municipios', '🗺'], ['/admin/tipos-prestador', 'Tipos de prestador', '🏷']] },
-    { titulo: 'Usuarios y roles', items: [['/admin/usuarios', 'Usuarios del sistema', '🔑'], ['/admin/roles', 'Roles', '🛡']] },
-    { titulo: 'Sitio público', items: [['/', 'Explorar', '🧭', true]] },
+    { items: [['/admin', 'Tablero', 'tablero', true], ['/admin/reportes', 'Reportes', 'grafico']] },
+    { titulo: 'Reseñas', items: [['/admin/resenas', 'Reseñas', 'estrella'], ['/admin/moderacion', 'Moderación', 'bandera'], ['/admin/destinos', 'Destinos', 'ubicacion'],
+      ['/admin/tipos-destino', 'Tipos de destino', 'etiqueta'], ['/admin/criterios', 'Criterios', 'lista']] },
+    { titulo: 'Núcleo común', items: [['/admin/prestadores', 'Prestadores', 'edificio'], ['/admin/planes', 'Planes', 'documento'], ['/admin/clientes', 'Clientes', 'usuario'],
+      ['/admin/reservas', 'Reservas', 'calendario'], ['/admin/pagos', 'Pagos', 'tarjeta'], ['/admin/notificaciones', 'Notificaciones', 'campana'],
+      ['/admin/municipios', 'Municipios', 'mapa'], ['/admin/tipos-prestador', 'Tipos de prestador', 'etiqueta']] },
+    { titulo: 'Usuarios y roles', items: [['/admin/usuarios', 'Usuarios del sistema', 'llave'], ['/admin/roles', 'Roles', 'escudo']] },
+    { titulo: 'Sitio público', items: [['/', 'Explorar', 'brujula', true]] },
   ],
   operador: [
-    { items: [['/admin/reservas', 'Reservas', '📅'], ['/admin/pagos', 'Pagos', '💳'], ['/admin/notificaciones', 'Notificaciones', '🔔']] },
-    { titulo: 'Sitio público', items: [['/', 'Explorar', '🧭', true]] },
+    { items: [['/admin/reservas', 'Reservas', 'calendario'], ['/admin/pagos', 'Pagos', 'tarjeta'], ['/admin/notificaciones', 'Notificaciones', 'campana']] },
+    { titulo: 'Sitio público', items: [['/', 'Explorar', 'brujula', true]] },
   ],
-  encargado: [{ items: [['/encargado', 'Reseñas recibidas', '★']] }, { titulo: 'Sitio público', items: [['/', 'Explorar', '🧭', true]] }],
+  encargado: [{ items: [['/encargado', 'Reseñas recibidas', 'estrella']] }, { titulo: 'Sitio público', items: [['/', 'Explorar', 'brujula', true]] }],
   cliente: [
-    { items: [['/', 'Explorar', '🧭', true]] },
-    { titulo: 'Mis viajes', items: [['/mis-reservas', 'Mis reservas', '📅'], ['/publicar', 'Publicar reseña', '✎'], ['/mis-resenas', 'Mis reseñas', '★']] },
-    { titulo: 'Mi cuenta', items: [['/notificaciones', 'Notificaciones', '🔔'], ['/perfil', 'Mi perfil', '👤']] },
+    { items: [['/', 'Explorar', 'brujula', true]] },
+    { titulo: 'Mis viajes', items: [['/mis-reservas', 'Mis reservas', 'calendario'], ['/publicar', 'Publicar reseña', 'lapiz'], ['/mis-resenas', 'Mis reseñas', 'estrella']] },
+    { titulo: 'Mi cuenta', items: [['/notificaciones', 'Notificaciones', 'campana'], ['/perfil', 'Mi perfil', 'usuario']] },
   ],
-  visitante: [{ items: [['/', 'Explorar', '🧭', true]] }],
+  visitante: [{ items: [['/', 'Explorar', 'brujula', true]] }],
 };
 
 const EXTRA = { '/prestador': ['Explorar', 'Prestador'], '/destino': ['Explorar', 'Destino'] };
@@ -74,7 +75,7 @@ export default function Layout() {
               {g.titulo && <div className="lateral-titulo">{g.titulo}</div>}
               {g.items.map(([a, t, icono, exacto]) => (
                 <NavLink key={a} to={a} end={exacto} className="lateral-enlace">
-                  <span className="icono" aria-hidden="true">{icono}</span>{t}
+                  <span className="icono"><Icono nombre={icono} tam={17} /></span>{t}
                 </NavLink>
               ))}
             </div>
@@ -86,7 +87,7 @@ export default function Layout() {
 
       <div className="principal">
         <header className="cabecera">
-          <button className="btn btn-sm btn-outline-secondary d-lg-none" onClick={() => setAbierto(true)} aria-label="Abrir menú" aria-expanded={abierto}>☰</button>
+          <button className="btn btn-sm btn-outline-secondary d-lg-none" onClick={() => setAbierto(true)} aria-label="Abrir menú" aria-expanded={abierto}><Icono nombre="menu" tam={18} /></button>
           <nav aria-label="Ubicación" className="flex-grow-1 min-w-0">
             <ol className="breadcrumb m-0">
               <li className="breadcrumb-item"><Link to="/">Inicio</Link></li>

@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { api } from '../api.js';
 import { useSesion } from '../auth.jsx';
 import { Alerta, Cargando, Modal, Titulo, Vacio, useLista, IconoBasura } from './comunes.jsx';
+import { Icono } from './Iconos.jsx';
 
 const POR_PAGINA = 15;
 
@@ -182,7 +183,7 @@ export default function CrudPage({ config }) {
                 </table>
               </div>
               {!visibles.length && (
-                <Vacio icono="🔎" titulo={buscar ? 'Ningún registro coincide con la búsqueda' : 'Todavía no hay registros'}>
+                <Vacio icono="buscar" titulo={buscar ? 'Ningún registro coincide con la búsqueda' : 'Todavía no hay registros'}>
                   {buscar ? <button className="btn btn-sm btn-link" onClick={() => setBuscar('')}>Ver todos</button>
                     : puedeEscribir && config.crear !== false && <button className="btn btn-sm btn-primary mt-2" onClick={() => abrir(null)}>Crear el primero</button>}
                 </Vacio>

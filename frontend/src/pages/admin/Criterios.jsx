@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { api } from '../../api.js';
 import { Alerta, Cargando, Modal, Titulo, useLista, useConfirmar } from '../../components/comunes.jsx';
+import { Icono } from '../../components/Iconos.jsx';
 
 export default function Criterios() {
   const confirmar = useConfirmar();
@@ -45,7 +46,7 @@ export default function Criterios() {
             <tbody>{lista.map((c) => (
               <tr key={c.idCriterio}>
                 <td>{c.idCriterio}</td><td className="text-capitalize">{c.nombre}</td>
-                {tipos.map((t) => <td key={t.idTipoPrestador} className="text-center">{c.idsTipos.includes(t.idTipoPrestador) ? '✔' : ''}</td>)}
+                {tipos.map((t) => <td key={t.idTipoPrestador} className="text-center">{c.idsTipos.includes(t.idTipoPrestador) ? <Icono nombre="check" titulo="Aplica" className="text-success" /> : ''}</td>)}
                 <td className="text-end text-nowrap">
                   <button className="btn btn-sm btn-outline-primary" onClick={() => { setError(''); setForm({ ...c }); }}>Editar</button>
                   <button className="btn btn-sm btn-outline-danger ms-1" onClick={() => eliminar(c)}>Eliminar</button>

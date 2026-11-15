@@ -31,7 +31,7 @@ export default function Tablero() {
       <div className="row g-3 mb-3">
         {kpis.map(([t, v, a]) => (
           <div className="col-6 col-md-3" key={t}><Link to={a} className="text-decoration-none"><div className={`card tarjeta-objeto tarjeta-kpi ${t === 'Reportes pendientes' && v > 0 ? 'alerta' : ''}`}><div className="card-body">
-            <div className="kpi">{v}</div><div className="text-muted small">{t}{t === 'Reportes pendientes' && v > 0 ? ' · por revisar →' : ''}</div>
+            <div className="kpi">{v}</div><div className="text-muted small">{t}{t === 'Reportes pendientes' && v > 0 ? ' · por revisar' : ''}</div>
           </div></div></Link></div>
         ))}
       </div>

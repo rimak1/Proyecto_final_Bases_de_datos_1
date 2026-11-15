@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { fecha } from '../api.js';
 import { Estrellas, Insignia, Modal } from './comunes.jsx';
+import { Icono } from './Iconos.jsx';
 
 export default function ResenaCard({ r, mostrarObjeto, acciones, miVoto, reportada, onVotar, onReportar, onRetirarReporte }) {
   const [foto, setFoto] = useState(null);
@@ -40,7 +41,8 @@ export default function ResenaCard({ r, mostrarObjeto, acciones, miVoto, reporta
           </div>
         )}
         <div className="d-flex flex-wrap gap-2 align-items-center small text-muted">
-          <span>👍 {r.votosUtiles} útil · 👎 {r.votosNoUtiles} no útil</span>
+          <span className="d-inline-flex align-items-center gap-1"><Icono nombre="pulgarArriba" /> {r.votosUtiles} útil ·
+            <Icono nombre="pulgarAbajo" /> {r.votosNoUtiles} no útil</span>
           {onVotar && (
             <>
               <button className={`btn btn-sm ${miVoto === 'útil' ? 'btn-primary' : 'btn-outline-primary'}`} aria-pressed={miVoto === 'útil'} title={miVoto === 'útil' ? 'Quitar mi voto' : 'Marcar como útil'} onClick={() => onVotar('útil')}>Útil</button>

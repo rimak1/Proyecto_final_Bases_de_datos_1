@@ -5,6 +5,7 @@ import { Bar } from 'react-chartjs-2';
 import { api, fecha } from '../../api.js';
 import { Alerta, Cargando, Insignia, Titulo, Vacio, useLista } from '../../components/comunes.jsx';
 import { exportarReporte } from '../../util/pdf.js';
+import { Icono } from '../../components/Iconos.jsx';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend, Title);
 
@@ -32,8 +33,8 @@ const REPORTES = [
   { codigo: 'R1', nivel: 'Simple', titulo: 'Reportes de reseñas pendientes de moderación', pregunta: '¿Qué denuncias de reseñas siguen sin resolver y cuántos días llevan esperando?',
     filtros: [F.motivo], columnas: [['idReporte', 'Reporte'], ['idResena', 'Reseña'], ['motivo', 'Motivo'], ['fechaReporte', 'Fecha del reporte', fecha], ['diasEspera', 'Días de espera']] },
   { codigo: 'R2', nivel: 'Simple', titulo: 'Distribución de la calificación general', pregunta: '¿Cuántas reseñas visibles hay con cada calificación de 1 a 5 y qué porcentaje del total representa cada una?',
-    filtros: [F.desde, F.hasta], columnas: [['calificacion', 'Calificación', (v) => `${v} ★`], ['cantidadResenas', 'Cantidad de reseñas'], ['porcentaje', 'Porcentaje', pct]],
-    grafico: (filas) => ({ tipo: 'vertical', labels: [1, 2, 3, 4, 5].map((n) => `${n} ★`),
+    filtros: [F.desde, F.hasta], columnas: [['calificacion', 'Calificación', (v) => `${v} de 5`], ['cantidadResenas', 'Cantidad de reseñas'], ['porcentaje', 'Porcentaje', pct]],
+    grafico: (filas) => ({ tipo: 'vertical', labels: [1, 2, 3, 4, 5].map((n) => `${n} ${n === 1 ? 'estrella' : 'estrellas'}`),
       datasets: [{ label: 'Reseñas', data: [1, 2, 3, 4, 5].map((n) => filas.find((f) => f.calificacion === n)?.cantidadResenas ?? 0), backgroundColor: VERDE }] }) },
   { codigo: 'R3', nivel: 'Simple', titulo: 'Reseñas publicadas por mes', pregunta: '¿Cómo cambia mes a mes la cantidad de reseñas publicadas y su calificación promedio?',
     filtros: [F.anio], columnas: [['mes', 'Mes'], ['cantidadResenas', 'Cantidad de reseñas'], ['calificacionPromedio', 'Calificación promedio', num()]] },
@@ -124,7 +125,7 @@ export default function Reportes() {
                 {REPORTES.filter((r) => r.nivel === nivel).map((r) => (
                   <button key={r.codigo} className={`list-group-item list-group-item-action ${r.codigo === codigo ? 'active' : ''}`}
                     aria-current={r.codigo === codigo ? 'page' : undefined} onClick={() => setCodigo(r.codigo)}>
-                    <div className="d-flex justify-content-between"><strong>{r.codigo}</strong>{r.grafico && <span className="small" title="Incluye gráfico">📊</span>}</div>
+                    <div className="d-flex justify-content-between"><strong>{r.codigo}</strong>{r.grafico && <Icono nombre="grafico" titulo="Incluye gráfico" />}</div>
                     <div className="small">{r.titulo}</div>
                   </button>
                 ))}
@@ -136,7 +137,7 @@ export default function Reportes() {
           <div className="card"><div className="card-body">
             <div className="d-flex justify-content-between flex-wrap gap-2">
               <div><h5 className="mb-1">{rep.codigo} — {rep.titulo}</h5><p className="text-muted small mb-2">{rep.pregunta}</p></div>
-              <button className="btn btn-primary align-self-start" disabled={!filas?.length} onClick={pdf} title={filas?.length ? 'Descargar tabla y gráfico en PDF' : 'No hay datos para exportar'}>⬇ Exportar PDF</button>
+              <button className="btn btn-primary align-self-start" disabled={!filas?.length} onClick={pdf} title={filas?.length ? 'Descargar tabla y gráfico en PDF' : 'No hay datos para exportar'}><Icono nombre="descargar" className="me-1" />Exportar PDF</button>
             </div>
             <div className="filtros-region" role="search" aria-label="Filtros del reporte">
               <div className="d-flex justify-content-between align-items-center mb-1">
@@ -164,7 +165,7 @@ export default function Reportes() {
                   <thead><tr>{columnas.map((c) => <th key={c.campo} className={typeof filas?.[0]?.[c.campo] === 'number' ? 'num' : ''}>{c.titulo}</th>)}</tr></thead>
                   <tbody>
                     {filas.map((f, i) => <tr key={i}>{columnas.map((c) => <td key={c.campo} className={typeof f[c.campo] === 'number' ? 'num' : ''}>{c.insignia ? <Insignia valor={f[c.campo]} /> : c.formato ? c.formato(f[c.campo]) : f[c.campo]}</td>)}</tr>)}
-                    {!filas.length && <tr><td colSpan={99}><Vacio icono="📭" titulo="Sin resultados con estos filtros">Pruebe con otros valores o use Restablecer.</Vacio></td></tr>}
+                    {!filas.length && <tr><td colSpan={99}><Vacio icono="bandeja" titulo="Sin resultados con estos filtros">Pruebe con otros valores o use Restablecer.</Vacio></td></tr>}
                   </tbody>
                 </table>
                 <div className="small text-muted mt-2">{filas.length} filas</div>

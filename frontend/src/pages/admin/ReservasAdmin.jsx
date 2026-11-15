@@ -1,11 +1,12 @@
 // CRUD de reservas (RF-06): crear (con precio congelado y notificaciones), consultar, actualizar,
-// cambiar estado (pendiente → confirmada → completada) y eliminar; documentos PDF de cada reserva (RF-20).
+// cambiar estado (pendiente, confirmada, completada) y eliminar; documentos PDF de cada reserva (RF-20).
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { api, fecha, hoyISO, pesos, textoReembolso } from '../../api.js';
 import { useSesion } from '../../auth.jsx';
 import { Alerta, Cargando, Insignia, Modal, Titulo, Vacio, useLista, useConfirmar, IconoBasura } from '../../components/comunes.jsx';
 import { Paginacion } from '../../components/CrudPage.jsx';
 import { BotonesDocumentos } from '../cliente/MisReservas.jsx';
+import { Icono } from '../../components/Iconos.jsx';
 
 const SIGUIENTE = { pendiente: ['confirmada', 'cancelada'], confirmada: ['completada', 'cancelada'] };
 
@@ -87,7 +88,7 @@ export default function ReservasAdmin() {
               </tr>
             ); })}</tbody>
           </table></div>
-          {!visibles.length && <Vacio icono="🔎" titulo="No hay reservas con ese filtro" />}
+          {!visibles.length && <Vacio icono="buscar" titulo="No hay reservas con ese filtro" />}
           <Paginacion total={visibles.length} pagina={pagina} setPagina={setPagina} />
           </>
         )}

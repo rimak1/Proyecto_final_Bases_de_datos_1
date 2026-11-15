@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api.js';
 import { Estrellas, Titulo, Vacio, useLista } from '../components/comunes.jsx';
+import { Icono } from '../components/Iconos.jsx';
 
 const ORDENES = { calificacion: 'Mejor calificados', resenas: 'Más reseñados', nombre: 'Nombre (A–Z)' };
 
@@ -45,8 +46,8 @@ export default function Explorar() {
           <div>
             <div className="form-label small fw-semibold">Quiero ver</div>
             <div className="segmentado" role="tablist">
-              <button role="tab" aria-selected={vista === 'destinos'} className={vista === 'destinos' ? 'activo' : ''} onClick={() => cambiarVista('destinos')}>🏞 Destinos</button>
-              <button role="tab" aria-selected={vista === 'prestadores'} className={vista === 'prestadores' ? 'activo' : ''} onClick={() => cambiarVista('prestadores')}>🏨 Prestadores</button>
+              <button role="tab" aria-selected={vista === 'destinos'} className={vista === 'destinos' ? 'activo' : ''} onClick={() => cambiarVista('destinos')}><Icono nombre="paisaje" className="me-1" />Destinos</button>
+              <button role="tab" aria-selected={vista === 'prestadores'} className={vista === 'prestadores' ? 'activo' : ''} onClick={() => cambiarVista('prestadores')}><Icono nombre="edificio" className="me-1" />Prestadores</button>
             </div>
           </div>
           <div className="flex-grow-1" style={{ minWidth: 200 }}>
@@ -94,7 +95,7 @@ export default function Explorar() {
                     <div className="d-flex justify-content-between gap-2">
                       <div>
                         <h5 className="mb-1">{nombreDe(x)}</h5>
-                        <div className="small text-muted">📍 {x.municipio} · <span className={`chip ${vista === 'prestadores' ? 'cafe' : ''}`}>{x.tipo}</span></div>
+                        <div className="small text-muted"><Icono nombre="ubicacion" /> {x.municipio} · <span className={`chip ${vista === 'prestadores' ? 'cafe' : ''}`}>{x.tipo}</span></div>
                       </div>
                       <div className="nota-grande" aria-label={x.calificacionPromedio ? `Calificación ${x.calificacionPromedio} de 5` : 'Sin calificaciones'}>
                         <div className="valor">{x.calificacionPromedio ?? '—'}</div>
@@ -105,7 +106,7 @@ export default function Explorar() {
                     {(x.descripcion || x.direccion) && (
                       <p className="small text-muted mt-2 mb-0">{(x.descripcion ?? x.direccion).slice(0, 110)}{(x.descripcion ?? '').length > 110 ? '…' : ''}</p>
                     )}
-                    <span className="mt-auto pt-2 small fw-semibold" style={{ color: 'var(--qs-verde)' }}>Ver reseñas →</span>
+                    <span className="mt-auto pt-2 small fw-semibold" style={{ color: 'var(--qs-verde)' }}>Ver reseñas <Icono nombre="flechaDerecha" /></span>
                   </div>
                 </div>
               </Link>
@@ -114,7 +115,7 @@ export default function Explorar() {
         })}
       </div>
       {lista && !ordenada.length && (
-        <Vacio icono="🧭" titulo="No hay resultados con esos filtros">
+        <Vacio icono="brujula" titulo="No hay resultados con esos filtros">
           <button className="btn btn-sm btn-outline-primary mt-2" onClick={() => setFiltros({ nombre: '', codDane: '', tipo: '' })}>Quitar filtros</button>
         </Vacio>
       )}

@@ -4,11 +4,12 @@ import { Link, useLocation } from 'react-router-dom';
 import { api, fecha, pesos, textoReembolso } from '../../api.js';
 import { Alerta, Cargando, Insignia, Modal, Titulo, Vacio, useConfirmar } from '../../components/comunes.jsx';
 import { generarDocumento } from '../../util/pdf.js';
+import { Icono } from '../../components/Iconos.jsx';
 
 const DOCUMENTOS = [
-  ['reserva', '🧾', 'Comprobante de reserva', 'Datos del cliente, del servicio y saldo pendiente.'],
-  ['factura', '💵', 'Factura', 'Detalle del plan, base gravable, IVA y pagos aplicados.'],
-  ['autorizacion', '✍', 'Autorización', 'Tratamiento de datos y prestación del servicio, para firmar.'],
+  ['reserva', 'recibo', 'Comprobante de reserva', 'Datos del cliente, del servicio y saldo pendiente.'],
+  ['factura', 'billete', 'Factura', 'Detalle del plan, base gravable, IVA y pagos aplicados.'],
+  ['autorizacion', 'firma', 'Autorización', 'Tratamiento de datos y prestación del servicio, para firmar.'],
 ];
 
 /** Un solo botón abre los documentos de la reserva (menos opciones a la vista por fila). */
@@ -20,14 +21,14 @@ export function BotonesDocumentos({ idReserva, onError }) {
   const descargar = (tipo, pago) => generarDocumento(tipo, datos, pago);
   return (
     <>
-      <button className="btn btn-sm btn-outline-secondary" onClick={abrir} title="Comprobantes, factura y autorización en PDF">📄 Documentos</button>
+      <button className="btn btn-sm btn-outline-secondary" onClick={abrir} title="Comprobantes, factura y autorización en PDF"><Icono nombre="documento" className="me-1" />Documentos</button>
       {datos && (
         <Modal titulo={`Documentos de la reserva #${idReserva}`} onCerrar={() => setDatos(null)}>
           <div className="card-titulo">De la reserva</div>
           <div className="list-group mb-3">
             {DOCUMENTOS.map(([tipo, icono, titulo, desc]) => (
               <button key={tipo} className="list-group-item list-group-item-action d-flex gap-3 align-items-center" onClick={() => descargar(tipo)}>
-                <span className="fs-4" aria-hidden="true">{icono}</span>
+                <span className="text-secondary"><Icono nombre={icono} tam={26} /></span>
                 <span className="flex-grow-1"><strong>{titulo}</strong><br /><span className="small text-muted">{desc}</span></span>
                 <span className="small" style={{ color: 'var(--qs-verde)' }}>Descargar PDF</span>
               </button>
@@ -142,8 +143,8 @@ export default function MisReservas() {
                     <div className="acciones">
                       {['pendiente', 'confirmada'].includes(r.estado) && r.totalPagado < r.valorTotal &&
                         <button className="btn btn-sm btn-primary" onClick={() => setPagando(r)}>Pagar</button>}
-                      {r.estado === 'completada' && !r.idResena && <Link className="btn btn-sm btn-primary" to={`/publicar?reserva=${r.idReserva}`}>★ Reseñar</Link>}
-                      {r.idResena && <span className="chip">✓ Reseñada</span>}
+                      {r.estado === 'completada' && !r.idResena && <Link className="btn btn-sm btn-primary" to={`/publicar?reserva=${r.idReserva}`}><Icono nombre="estrella" className="me-1" />Reseñar</Link>}
+                      {r.idResena && <span className="chip"><Icono nombre="check" className="me-1" />Reseñada</span>}
                       <BotonesDocumentos idReserva={r.idReserva} onError={setError} />
                       {['pendiente', 'confirmada'].includes(r.estado) && <>
                         <span className="separador" aria-hidden="true" />
@@ -157,7 +158,7 @@ export default function MisReservas() {
           </table>
           </div>
           {!lista.length && (
-            <Vacio icono="🧳" titulo={grupo === 'resenar' ? 'No tiene reservas pendientes de reseñar' : grupo === 'proximas' ? 'No tiene reservas próximas' : 'Sin reservas en el historial'}>
+            <Vacio icono="maleta" titulo={grupo === 'resenar' ? 'No tiene reservas pendientes de reseñar' : grupo === 'proximas' ? 'No tiene reservas próximas' : 'Sin reservas en el historial'}>
               {grupo === 'proximas' && <Link className="btn btn-sm btn-primary mt-2" to="/">Explorar prestadores</Link>}
             </Vacio>
           )}

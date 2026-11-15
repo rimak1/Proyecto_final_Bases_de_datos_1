@@ -5,6 +5,7 @@ import { api } from '../../api.js';
 import { useSesion } from '../../auth.jsx';
 import { Alerta, Cargando, IconoBasura, Insignia, Modal, Titulo, Vacio, useConfirmar, useLista } from '../../components/comunes.jsx';
 import { CamposAgrupados, Paginacion } from '../../components/CrudPage.jsx';
+import { Icono } from '../../components/Iconos.jsx';
 
 const TIPOS = ['recordatorio de reserva', 'confirmación de reserva', 'confirmación de pago', 'cambio de estado', 'promoción'];
 const ESTADOS = ['pendiente', 'enviada', 'fallida', 'leída'];
@@ -137,7 +138,7 @@ export default function NotificacionesAdmin() {
                 </tr>
               ))}</tbody>
             </table></div>
-            {!visibles.length && <Vacio icono="🔔" titulo="No hay notificaciones con esos filtros" />}
+            {!visibles.length && <Vacio icono="campana" titulo="No hay notificaciones con esos filtros" />}
             <Paginacion total={visibles.length} pagina={pagina} setPagina={setPagina} />
           </>
         )}

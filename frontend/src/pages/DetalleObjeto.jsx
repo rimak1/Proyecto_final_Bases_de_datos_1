@@ -6,6 +6,7 @@ import { api, hoyISO, pesos } from '../api.js';
 import { useSesion } from '../auth.jsx';
 import { Alerta, Cargando, Estrellas, Modal } from '../components/comunes.jsx';
 import ResenaCard from '../components/ResenaCard.jsx';
+import { Icono } from '../components/Iconos.jsx';
 
 function Reservar({ plan, onCerrar }) {
   const navegar = useNavigate();
@@ -81,7 +82,7 @@ export default function DetalleObjeto({ tipo }) {
 
   return (
     <div>
-      <Link to="/" className="small">← Volver a explorar</Link>
+      <Link to="/" className="small"><Icono nombre="flechaIzquierda" /> Volver a explorar</Link>
       <div className="card my-3"><div className="card-body">
         <span className="chip">{obj.tipo}</span> <span className="small text-muted">{obj.municipio}</span>
         <h2 className="mt-2">{obj.nombre ?? obj.nombreComercial}</h2>

@@ -1,12 +1,13 @@
 // Componentes pequeños reutilizables y el proveedor de avisos y confirmaciones.
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { api } from '../api.js';
+import { Icono } from './Iconos.jsx';
 
 export function Estrellas({ valor, total = 5 }) {
   const v = Math.round(Number(valor) || 0);
   return (
     <span className="estrellas" role="img" aria-label={valor ? `${valor} de 5 estrellas` : 'Sin calificaciones'} title={valor ? `${valor} de 5` : 'Sin calificaciones'}>
-      {Array.from({ length: total }, (_, i) => <span key={i} className={i < v ? '' : 'vacia'} aria-hidden="true">★</span>)}
+      {Array.from({ length: total }, (_, i) => <Icono key={i} nombre="estrella" className={i < v ? '' : 'vacia'} />)}
     </span>
   );
 }
@@ -29,7 +30,7 @@ export function EstrellasInput({ valor, onChange, etiqueta, conTexto }) {
       <span className="estrellas-input" role="radiogroup" aria-label={etiqueta} onMouseLeave={() => setSobre(0)}>
         {[1, 2, 3, 4, 5].map((n) => (
           <button type="button" key={n} role="radio" aria-checked={n === valor} className={n <= mostrado ? 'llena' : ''}
-            onMouseEnter={() => setSobre(n)} onClick={() => onChange(n)} aria-label={`${n} estrellas`} title={TEXTO_ESTRELLAS[n]}>★</button>
+            onMouseEnter={() => setSobre(n)} onClick={() => onChange(n)} aria-label={`${n} estrellas`} title={TEXTO_ESTRELLAS[n]}><Icono nombre="estrella" /></button>
         ))}
       </span>
       {conTexto && <span className="small text-muted" style={{ minWidth: 70 }}>{mostrado ? `${mostrado}/5 · ${TEXTO_ESTRELLAS[mostrado]}` : 'Sin calificar'}</span>}
@@ -58,7 +59,7 @@ export function ProveedorUI({ children }) {
 
   const confirmar = useCallback((opciones) => new Promise((resolver) => setPregunta({ ...opciones, resolver })), []);
   const responder = (si) => { pregunta.resolver(si); setPregunta(null); };
-  const ICONO = { success: '✓', danger: '⚠', warning: '!', info: 'i' };
+  const ICONO = { success: 'check', danger: 'alerta', warning: 'alerta', info: 'info' };
 
   return (
     <CtxUI.Provider value={{ avisar, confirmar }}>
@@ -66,7 +67,7 @@ export function ProveedorUI({ children }) {
       <div className="avisos" role="status" aria-live="polite">
         {avisos.map((a) => (
           <div key={a.n} className={`aviso ${a.tipo}`}>
-            <strong aria-hidden="true">{ICONO[a.tipo]}</strong>
+            <span className="aviso-icono"><Icono nombre={ICONO[a.tipo]} tam={18} /></span>
             <span className="flex-grow-1">{a.mensaje}</span>
             <button type="button" className="btn-close btn-sm" aria-label="Cerrar aviso" onClick={() => setAvisos((x) => x.filter((y) => y.n !== a.n))} />
           </div>
@@ -142,10 +143,10 @@ export function Cargando({ filas = 4 }) {
   );
 }
 
-export function Vacio({ icono = '🗂', titulo, children }) {
+export function Vacio({ icono = 'carpeta', titulo, children }) {
   return (
     <div className="vacio">
-      <span className="icono" aria-hidden="true">{icono}</span>
+      <span className="icono"><Icono nombre={icono} tam={36} /></span>
       <div className="fw-semibold text-body">{titulo}</div>
       {children && <div className="small mt-1">{children}</div>}
     </div>
@@ -182,17 +183,17 @@ export const ESTADO_COLOR = {
   exitoso: 'success', fallido: 'danger', reembolsado: 'info', enviada: 'success', fallida: 'danger', 'leída': 'secondary',
   visible: 'success', oculta: 'danger', aceptado: 'danger', rechazado: 'secondary',
 };
-// Un símbolo por estado: la información no depende solo del color
+// Un ícono por estado: la información no depende solo del color
 const ESTADO_ICONO = {
-  activo: '●', inactivo: '○', suspendido: '❚❚', retirado: '○', bloqueado: '⊘',
-  pendiente: '⏳', confirmada: '✓', completada: '✓✓', cancelada: '✕',
-  exitoso: '✓', fallido: '✕', reembolsado: '↺', enviada: '✓', fallida: '✕', 'leída': '👁',
-  visible: '●', oculta: '⊘', aceptado: '⊘', rechazado: '✕',
+  activo: 'circulo', inactivo: 'pausa', suspendido: 'pausa', retirado: 'prohibido', bloqueado: 'prohibido',
+  pendiente: 'reloj', confirmada: 'check', completada: 'checkDoble', cancelada: 'cerrar',
+  exitoso: 'check', fallido: 'cerrar', reembolsado: 'deshacer', enviada: 'check', fallida: 'cerrar', 'leída': 'ojo',
+  visible: 'ojo', oculta: 'prohibido', aceptado: 'prohibido', rechazado: 'cerrar',
 };
 
 export const Insignia = ({ valor }) => (
   <span className={`badge text-bg-${ESTADO_COLOR[valor] ?? 'light'}`}>
-    <span aria-hidden="true" className="me-1">{ESTADO_ICONO[valor]}</span>{valor}
+    {ESTADO_ICONO[valor] && <Icono nombre={ESTADO_ICONO[valor]} className="me-1" tam={11} />}{valor}
   </span>
 );
 

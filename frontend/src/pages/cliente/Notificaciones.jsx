@@ -2,8 +2,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { api } from '../../api.js';
 import { Cargando, Insignia, Titulo } from '../../components/comunes.jsx';
+import { Icono } from '../../components/Iconos.jsx';
 
-const ICONO = { 'recordatorio de reserva': '⏰', 'confirmación de reserva': '✅', 'confirmación de pago': '💳', 'cambio de estado': '🔄', promoción: '🎁' };
+const ICONO = { 'recordatorio de reserva': 'reloj', 'confirmación de reserva': 'check', 'confirmación de pago': 'tarjeta', 'cambio de estado': 'actualizar', promoción: 'regalo' };
 
 export default function Notificaciones() {
   const [lista, setLista] = useState(null);
@@ -18,7 +19,7 @@ export default function Notificaciones() {
         <div className="list-group">
           {lista.map((n) => (
             <div key={n.idNotificacion} className={`list-group-item d-flex gap-3 ${n.estado === 'enviada' ? 'fw-semibold' : ''}`}>
-              <div className="fs-4">{ICONO[n.tipo]}</div>
+              <div className="icono-notificacion"><Icono nombre={ICONO[n.tipo]} tam={20} /></div>
               <div className="flex-grow-1">
                 <div>{n.mensaje}</div>
                 <div className="small text-muted fw-normal">{n.tipo} · {n.canal} · programada {n.fechaProgramada.slice(0, 16)}{n.idReserva ? ` · reserva #${n.idReserva}` : ''}</div>
