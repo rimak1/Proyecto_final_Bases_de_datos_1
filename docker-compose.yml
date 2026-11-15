@@ -1,0 +1,30 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: quindiostay-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_quindiostay
+      MYSQL_DATABASE: quindiostay
+      MYSQL_USER: quindiostay_app
+      MYSQL_PASSWORD: QuindioStay2026*
+      TZ: America/Bogota
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+      - --default-time-zone=-05:00
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      # Se ejecutan en orden alfabético la primera vez que se crea el contenedor
+      - ./database/01_DDL_Grupo02D.sql:/docker-entrypoint-initdb.d/01_DDL_Grupo02D.sql:ro
+      - ./database/02_DML_Grupo02D.sql:/docker-entrypoint-initdb.d/02_DML_Grupo02D.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot_quindiostay"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+volumes:
+  mysql_data:
